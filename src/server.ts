@@ -1,16 +1,8 @@
 import express from "express"
+import router from "./router"
 
 const server = express()
 
-// Routing
-server.get('/', (req, res) => {
-
-    const datos = [
-        {id: 1, nombre: 'Juan'},
-        {id: 2, nombre: 'Pedro'}
-    ]
-
-    res.json(datos)
-})
+server.use('/api/products', router)
 
 export default server
