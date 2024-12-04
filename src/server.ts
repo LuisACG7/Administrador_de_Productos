@@ -1,4 +1,5 @@
 import express from 'express'
+import colors from 'colors'
 import router from './router'
 import db from './config/db'
 
@@ -7,10 +8,10 @@ async function connectDB() {
     try {
         await db.authenticate()
         db.sync()
-        console.log('Conectado a la BD')
+        console.log(colors.blue.bold( 'Conectado a la BD'))
     }catch(error) {
-        console.log(error)
-        console.log('Hubo un error al conectar a la BD')
+        //console.log(error)
+        console.log(colors.red.bold( 'Hubo un error al conectar a la BD'))
     }
 }
 connectDB()
