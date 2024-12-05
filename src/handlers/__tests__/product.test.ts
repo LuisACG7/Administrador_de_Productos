@@ -115,7 +115,6 @@ describe('PUT /api/products/:id', () => {
         expect(response.body.errors[0].msg).toBe('ID no válido')
     }, 10000) // Timeout de 10 segundos
 
-
     it('should display validation error messages when updating a product', async () => {
         const response = await request(server).put('/api/products/1').send({})
 
@@ -180,6 +179,31 @@ describe('PUT /api/products/:id', () => {
         expect(response.status).not.toBe(400)
         expect(response.body).not.toHaveProperty('errors')
     })
-
 })
 
+describe('DELETE /api/products/:id', () => {
+    it('Should check a valid ID', async () => {
+        const response = await request(server).delete('/api/products/not-valid')
+        expect(response.status).toBe(400)
+        expect(response.body).toHaveProperty('errors')
+        expect(response.body.errors[0].msg).toBe('ID no valido')
+    })
+
+    it('should return a 404 response for a non-existent product', async () => {
+        const productId = 2000
+        const response = await request(server).delete(`/api/products/${productId}`)
+        expect(response.status).toBe(404)
+        expect(response.body.error).toBe('Producto No Encontrado')
+
+        expect(response.status).not.toBe(200)
+    })
+
+    it('should delete a product', async () => {
+        const response = await request(server).delete('/api/products/1')
+        expect(response.status).toBe(200)
+        expect(response.body.data).toBe('Producto Eliminado')
+
+        expect(response.status).not.toBe(400)
+        expect(response.status).not.toBe(404)
+    })
+})
