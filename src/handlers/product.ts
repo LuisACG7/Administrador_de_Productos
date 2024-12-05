@@ -7,6 +7,7 @@ export const getProducts = async (req: Request, res: Response) => {
             order: [
                 ['price', 'DESC']
             ],
+
             attributes: {exclude: ['createdAt', 'updatedAt', 'availability']}
         })
         res.json({data: products})
@@ -14,6 +15,24 @@ export const getProducts = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+export const getProductById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { id } = req.params;
+      // Consulta el producto por su llave primaria
+      const product = await Product.findByPk(id);
+  
+      if (!product) {
+        res.status(404).json({ error: 'Producto No Encontrado' });
+        return;
+      }
+  
+      res.json({ data: product });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}  
 
 export const createProduct = async (req : Request, res: Response) => {
     try {
